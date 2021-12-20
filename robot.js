@@ -74,7 +74,7 @@ export function runRobot(state,robot,memory){
     }
     
     
-    Print the list of parcels
+//     Print the list of parcels
     
     function printParcels(){
       let parcelString = "";
