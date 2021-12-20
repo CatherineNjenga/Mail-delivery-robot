@@ -124,7 +124,6 @@ export function routeRobot(state,memory){
     return {direction:memory[0],memory:memory.slice(1)};
 }
 
-console.log(runRobot(VillageState.random(), routeRobot,[]));
 
 function findRoute(graph ,from ,to){
   let work =[{at:from, route:[]}];
@@ -163,7 +162,6 @@ export function goalOrientedRobot({place,parcels}, route){
   return {direction:route[0], memory:route.splice(1)};
 }
 
-console.log(runRobot(VillageState.random(), goalOrientedRobot,[]));
 
 export function parcelsNode(place, parcels, graph) {
   let keys = Object.keys(graph);
