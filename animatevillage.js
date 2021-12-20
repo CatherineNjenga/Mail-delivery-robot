@@ -48,12 +48,24 @@ class Animation {
       this.button.textContent = "Stop"
 
       this.button.addEventListener("click", () => this.clicked())
-      this.schedule()
+      
+      // should the game begin started or stopped?
+      if (!start) {
+        this.button.textContent = "Start"
+      } else {
+        this.button.textContent = "Stop"
+        this.schedule()
+      }
 
       this.updateView()
       this.updateParcels()
 
       this.robotElt.addEventListener("transitionend", () => this.updateParcels())
+    }
+    
+    /** Deletes all created elements. */
+    deleteNode() {
+      this.node.remove()
     }
 
     updateView() {
