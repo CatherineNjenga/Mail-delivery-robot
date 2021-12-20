@@ -48,40 +48,40 @@ export var VillageState  = class VillageState {
 
   
 export function runRobot(state,robot,memory){
-    console.log("Post Office");
+    log("Post Office");
     printParcels();
     for(let turn=0;;turn++){
       if(state.parcels.length==0){
-        console.log(`Done in ${turn} turns`);
+        log(`Done in ${turn} turns`);
         break;
       }
       let action = robot(state,memory);
       state = state.move(action.direction);
       memory = action.memory;
-      console.log(`Moved to ${action.direction}`);
+      log(`Moved to ${action.direction}`);
       printParcels();
       
     }
 
-    // Print a message either to the console or to the document
+    Print a message either to the console or to the document
 
-    // function log(message){
-    //   if(typeof document === 'undefined'){
-    //     console.log(message);
-    //   } else {
-    //     document.write(`${message} <br>`);
-    //   }
-    // }
+    function log(message){
+      if(typeof document === 'undefined'){
+        console.log(message);
+      } else {
+        document.write(`${message} <br>`);
+      }
+    }
     
     
-    // Print the list of parcels
+    Print the list of parcels
     
     function printParcels(){
       let parcelString = "";
       state.parcels.forEach(p => {
         parcelString += `${p.place[0]}→${p.address[0]},`
       });
-      console.log(` [${parcelString.slice(0, -2)}] (${state.parcels.length})`)
+      log(` [${parcelString.slice(0, -2)}] (${state.parcels.length})`)
     }
 }
 
@@ -107,7 +107,6 @@ VillageState.random = function(parcelCount=5){
       }while (place==address)
       parcels.push({place,address});
     }
-    console.log(parcels)
     return new VillageState("Post Office", parcels);  
 };
 
@@ -143,6 +142,18 @@ function findRoute(graph ,from ,to){
 export function goalOrientedRobot({place,parcels}, route){
   if(route.length==0){
     let parcel = parcels[0];
+      
+    // this is optional, but provides some improvement over the original code from the book
+    if (true) {
+      let nodes = parcelsNode(place,parcels,roadGraph);
+      let [kin,kout] = maxNode(nodes);
+      if (nodes[kin].in > 0) {
+        parcel = parcels[nodes[kin].index]; // parcels.find(x => x.place == kin);
+      } else { 
+        parcel = parcels[nodes[kout].index];
+        console.assert (parcel.place == place, `not on robot's hand`);
+      }
+    }
     if(parcel.place != place){
       route = findRoute(roadGraph,place, parcel.place);
     } else {
