@@ -87,20 +87,20 @@ class Animation {
         }
     }
 
-    tick() {
-        let {direction, memory} = this.robot(this.worldState, this.robotState)
-        this.worldState = this.worldState.move(direction)
-        this.robotState = memory
-        this.turn++
-        this.updateView()
-        if (this.worldState.parcels.length == 0) {
-          this.button.remove()
-          this.text.textContent = ` Finished after ${this.turn} turns`
-          this.robotElt.firstChild.src = "images/robot_idle2x.png"
-        } else {
-          this.schedule()
-        }
-    }
+//     tick() {
+//         let {direction, memory} = this.robot(this.worldState, this.robotState)
+//         this.worldState = this.worldState.move(direction)
+//         this.robotState = memory
+//         this.turn++
+//         this.updateView()
+//         if (this.worldState.parcels.length == 0) {
+//           this.button.remove()
+//           this.text.textContent = ` Finished after ${this.turn} turns`
+//           this.robotElt.firstChild.src = "images/robot_idle2x.png"
+//         } else {
+//           this.schedule()
+//         }
+//     }
 
     schedule() {
         this.timeout = setTimeout(() => this.tick(), 1000 / speed)
