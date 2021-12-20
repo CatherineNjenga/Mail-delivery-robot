@@ -39,7 +39,7 @@ class Animation {
       this.robotElt = this.node.appendChild(doc.createElement("div"))
       this.robotElt.style.cssText = `position: absolute; transition: left ${0.8 / speed}s, top ${0.8 / speed}s;`
       let robotPic = this.robotElt.appendChild(doc.createElement("img"))
-      robotPic.src = "images/robot_moving2x(1).gif"
+      robotPic.src = "images/robot_moving2.gif"
       this.parcels = []
 
       this.text = this.node.appendChild(doc.createElement("span"))
