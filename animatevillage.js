@@ -72,7 +72,7 @@ class Animation {
           heights[place] += 14
           let node = document.createElement("div")
           let offset = placeKeys.indexOf(address) * 16
-          node.style.cssText = "position: absolute; height: 16px; width: 16px; background-image: url(img/parcel2x.png); background-position: 0 -" + offset + "px";
+          node.style.cssText = "position: absolute; height: 16px; width: 16px; background-image: url(images/parcel2x.png); background-position: 0 -" + offset + "px";
           if (place == this.worldState.place) {
             node.style.left = "25px"
             node.style.bottom = (20 + height) + "px"
