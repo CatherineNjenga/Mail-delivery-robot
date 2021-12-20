@@ -154,6 +154,42 @@ export function goalOrientedRobot({place,parcels}, route){
 
 console.log(runRobot(VillageState.random(), goalOrientedRobot,[]));
 
+export function parcelsNode(place, parcels, graph) {
+  let keys = Object.keys(graph);
+    
+    /*
+  let nodesMap = new Map(keys.map((k) => [k,{in: 0, out: 0}]));
+  console.log(nodesMap);
+  console.log(nodesMap.get('Cabin').in);
+  */
+  let nodes = {};
+  for (let k of keys) {
+    nodes[k] = {in: 0, out: 0};   
+  }
+  for (let [i,p] of parcels.entries()) {
+    if (p.place != place) {   // not on robot's hand
+      nodes[p.place].in += 1;
+      nodes[p.place].index = i;
+    }
+    nodes[p.address].out += 1;
+    if (nodes[p.address].index == undefined)
+      nodes[p.address].index = i;
+  }
+  return nodes;
+}
+/**
+ * Gets the nodes of the graph with the maximum number of parcels to send
+ * and the maximum number of parcels addressed to.
+ * 
+ * @param {Object<string:Object<number,number,number>>} nodes number of parcels in a node, and parcels to a node.
+ * @returns {Array<number,number>} key of the nodes with maximum 'in' and 'out' values.
+ */
+export function maxNode (nodes) {
+  let keys = Object.keys(nodes);
+  return [keys.reduce((a, b) => nodes[a].in > nodes[b].in ? a : b),
+          keys.reduce((a, b) => nodes[a].out > nodes[b].out ? a : b)];
+}
+
 // export default {
 //   roadGraph,
 //   VillageState,
