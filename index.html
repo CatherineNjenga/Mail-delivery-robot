@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./animatevillage.js"></script>
+    <!-- <script src="robot.js"></script> -->
+    <title>Robot</title>
+    <style>
+        body {
+                padding-top: 20px; /* center elements */
+                margin: 0 auto;
+                box-sizing: border-box; /* padding and border included in the width and height */
+                background: seagreen;
+            }
+            .control {
+                margin-left: 10px;
+                color: white;
+                border: none;
+                background-color: brown;
+                cursor: pointer;
+                border-radius: 10%;
+            }
+            label {
+                color: white;
+                margin-left: 10px;
+                background-color: Transparent;
+            }
+        
+    </style>
+    </head>
+    <body onload="newTask()">
+        <label for="robots">Choose a robot:</label>
+        <select name="robots" id="robots" onchange="document.cookie=`robots = ${this.selectedIndex}; path=/;`">
+            <option value="0">Random</option>
+            <option value="1">Route</option>
+            <option value="2" selected="selected">Oriented</option>
+            <option value="3">Lazy</option>
+        </select>
+        <label for="nparcels">#parcels:</label>
+        <select name="nparcels" id="nparcels" onchange="newTask(this)">
+            <option value="5">5</option>
+            <option value="15" selected="selected">15</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        <br>
+        <button id="oriented" class="control" onclick="RobotCode()">
+            Animate Robot
+        </button>
+        <button id="run" class="control" onclick="runRobotCode()">
+            Run Robot
+        </button>
+        <button id="task" class="control" onclick="location.reload()">
+            New Task
+        </button>
+        <script type="module">
+            import {
+                roadGraph,
+                VillageState,
+                randomRobot,
+                routeRobot,
+                goalOrientedRobot,
+                // lazyRobot,
+                // runRobot,
+            } from "./robot.js";
+            console.log(roadGraph);
+
+            // Module creates a scope to avoid name collisions.
+            // Either expose your function to the global window object or use addEventListener to bind handler.
+            window.RobotCode = RobotCode;
+            window.runRobotCode = runRobotCode;
+            window.newTask = newTask;
+
+            var task,
+                anim = null;
+            var rtypes = [
+                randomRobot,
+                routeRobot,
+                goalOrientedRobot,
+                // lazyRobot,
+            ];
+
+            function newTask(selectedOption) {
+                // save the current selection in a cookie
+                if (selectedOption) {
+                    document.cookie = `nparcels = ${selectedOption.selectedIndex}; path=/;`;
+                } else {
+                    ["nparcels", "robots"].forEach((elmt) => {
+                        let cind = document.cookie.indexOf(elmt);
+                        if (cind != -1) {
+                            let semicolon = `${document.cookie};`.indexOf(
+                                ";",
+                                cind
+                            );
+                            document.getElementById(elmt).selectedIndex =
+                                document.cookie.substring(
+                                    cind + elmt.length + 1,
+                                    semicolon
+                                );
+                        }
+                    });
+                }
+                let nparcels = document.getElementById("nparcels").value;
+                task = VillageState.random(nparcels);
+                if (anim == null) {
+                    let type = document.getElementById("robots").value;
+                    anim = runRobotAnimation(task, rtypes[type], [], false);
+                }
+            }
+
+            function RobotCode() {
+                let type = document.getElementById("robots").value;
+                if (anim) anim.deleteNode();
+                anim = runRobotAnimation(task, rtypes[type], []);
+            }
+
+            function runRobotCode() {
+                let type = document.getElementById("robots").value;
+                let nparcels = document.getElementById("nparcels").value;
+                document.write(
+                    `Robot Type: ${rtypes[type].prototype.constructor.name} <br>`
+                );
+                document.write(`Number of Parcels: ${nparcels} <br>`);
+                runRobot(task, rtypes[type], []);
+            }
+        </script>
+    <div style="position: relative; line-height: 0.1; margin-left: 10px;">
+        <images src="images/village2x2.png" style="vertical-align: -8px; border: 5px solid rgb(85, 85, 85); margin-bottom: 20px;">
+        <div style="position: absolute; transition: left 0.4s ease 0s, top 0.4s ease 0s; top: 19px; left: 189px;">
+            <images src="images/robot_moving2x (1).gif">
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -16px; left: 25px; bottom: 20px;">
+            </div>
+        </div>
+            <span> Turn 0 </span>
+            <button style="color: white; background: rgb(34, 136, 187); border: none; border-radius: 2px; padding: 2px 5px; line-height: 1.1; font-family: sans-serif; font-size: 80%;">Start
+            </button>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -96px; left: 367px; top: 57px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -80px; left: 274px; top: 90px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -96px; left: 132px; top: 202px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px 0px; left: 30px; top: 177px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -128px; left: 178px; top: 275px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -112px; left: 81px; top: 108px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -80px; left: 178px; top: 261px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -64px; left: 367px; top: 43px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -144px; left: 178px; top: 247px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -48px; left: 367px; top: 29px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -112px; left: 310px; top: 193px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -96px; left: 197px; top: 203px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -64px; left: 81px; top: 94px;">
+            </div>
+            <div style="position: absolute; height: 16px; width: 16px; background-image: url(&quot;images/parcel2x.png&quot;); background-position: 0px -160px; left: 45px; top: 273px;">
+            </div>
+        </div>
+    </body>
+</html>
