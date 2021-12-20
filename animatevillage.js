@@ -96,7 +96,7 @@ class Animation {
         if (this.worldState.parcels.length == 0) {
           this.button.remove()
           this.text.textContent = ` Finished after ${this.turn} turns`
-          this.robotElt.firstChild.src = "img/robot_idle2x.png"
+          this.robotElt.firstChild.src = "images/robot_idle2x.png"
         } else {
           this.schedule()
         }
