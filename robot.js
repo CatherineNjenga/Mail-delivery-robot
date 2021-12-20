@@ -63,7 +63,7 @@ export function runRobot(state,robot,memory){
       
     }
 
-    Print a message either to the console or to the document
+//     Print a message either to the console or to the document
 
     function log(message){
       if(typeof document === 'undefined'){
