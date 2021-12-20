@@ -115,7 +115,7 @@ class Animation {
           clearTimeout(this.timeout)
           this.timeout = null
           this.button.textContent = "Start"
-          this.robotElt.firstChild.src = "img/robot_idle2x.png"
+          this.robotElt.firstChild.src = "images/robot_idle2x.png"
         }
       }
     }
